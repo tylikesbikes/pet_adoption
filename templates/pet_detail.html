@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %} Viewing {{pet.name}}, a {{pet.species}} {% endblock %}
+
+{% block content %}
+
+    {% for msg in get_flashed_messages() %}
+        <p class="text-danger">
+            {{msg}}
+        </p>
+    {% endfor %}
+
+    <h1>{{pet.name}}</h1>
+
+    {% if pet.species %}
+    <p>
+        Species:  {{pet.species}}
+    </p>
+    {% endif %}
+    
+    {% if pet.age %}
+    <p>
+        Age:  {{pet.age}}
+    </p>
+    {% endif %}
+
+    {% if pet.photo_url %}
+       Photo: <img src = "{{pet.photo_url}}" height="200" width="200">
+    {% endif %}
+
+    <div>
+        <form action="/{{pet.id}}" method="POST">
+            {{form.hidden_tag()}}
+
+            {% for field in form if field.widget.input_type != 'hidden' %}
+                <p>
+                {{field.label}}
+                {{field}}
+                {% for error in field.errors %}
+                    {{field.error}}
+                {% endfor %}
+                </p>
+            {% endfor %}
+        <button>Edit Details</button>
+        </form>
+    </div>
+
+{% endblock %}
